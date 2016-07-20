@@ -43,19 +43,21 @@ Currently, installation must be done manually.
 11. Run "sudo /etc/init.d/okamera start" to start recording
 
 
-Okamera logs to syslog so you can read the log messages there (/var/log/syslog). To stop okamera you can use the init script: sudo "/etc/init.d/okamera stop".
+If you want to access the files remotely, install and configure an web server and copy the files in the web folder to where you set up in your web server.
+The video and thumbnail directory set up in the okamera configuration file (/etc/okamera/okamera_config) must be inside the shared folder.
+Edit index.php and videoplayer.php and set the directory parameters. You probably should set up basic http auth too.
 
-I'll upload the simple php web interface soon.
+
+Okamera logs to syslog so you can read the log messages there (/var/log/syslog). To stop okamera you can use the init script: sudo "/etc/init.d/okamera stop".
 
 
 # TODO
 
-1. Upload the web part and update the install instructions
-2. Make scripts for compiling and installing
-3. Use a SQLite db to store data, instead of always parsing the folders
-4. Use ffprobe to determine the length of the videos
-5. Improve the web interface
-6. Create html files so PHP is not required
-7. Add a simple webserver so no external webserver is required
-8. Use MMAL instead of raspivid to record the video files
-9. Use libavformat instead of ffmpeg to mux the video files
+Make scripts for compiling and installing
+Use a SQLite db to store data, instead of always parsing the folders
+Use ffprobe to determine the length of the videos
+Improve the web interface
+Create html files so PHP is not required
+Add a simple webserver so no external webserver is required
+Use MMAL instead of raspivid to record the video files
+Use libavformat instead of ffmpeg to mux the video files
