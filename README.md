@@ -44,11 +44,15 @@ Currently, installation must be done manually.
 
 
 If you want to access the files remotely, install and configure an web server and copy the files in the web folder to where you set up in your web server.
+
 The video and thumbnail directory set up in the okamera configuration file (/etc/okamera/okamera_config) must be inside the shared folder.
+
 Edit index.php and videoplayer.php and set the directory parameters. You probably should set up basic http auth too.
 
 
-Okamera logs to syslog so you can read the log messages there (/var/log/syslog). To stop okamera you can use the init script: sudo "/etc/init.d/okamera stop".
+# Using
+Okamera logs to syslog so you can read the log messages there (/var/log/syslog).
+To stop okamera you can use the init script: "sudo /etc/init.d/okamera stop".
 
 
 # TODO
