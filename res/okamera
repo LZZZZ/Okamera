@@ -1,0 +1,47 @@
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          okamera
+# Required-Start:    $syslog
+# Required-Stop:     $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Raspberry Pi video recorder daemon
+### END INIT INFO
+
+DAEMON_PATH="/usr/local/bin"
+
+DAEMON=okamera
+
+NAME=Okamera
+DESC="Raspberry Pi video recorder daemon"
+PIDFILE=/dev/shm/okamera/okamera.lock
+SCRIPTNAME=/etc/init.d/$NAME
+
+case "$1" in
+start)
+	printf "%s\n" "Starting $NAME"
+	cd $DAEMON_PATH
+	PID=`$DAEMON > /dev/null 2>&1 & echo $!`
+;;
+stop)
+        printf "%s\n" "Stopping $NAME"
+            PID=`cat $PIDFILE`
+            cd $DAEMON_PATH
+        if [ -f $PIDFILE ]; then
+            kill -INT $PID
+            printf "%s\n" "Ok"
+            rm -f $PIDFILE
+        else
+            printf "%s\n" "pidfile not found"
+        fi
+;;
+restart)
+  	$0 stop
+  	$0 start
+;;
+
+*)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
