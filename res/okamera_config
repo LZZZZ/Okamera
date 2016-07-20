@@ -3,73 +3,107 @@
 #
 
 # Where to save video files
-# You may want to put this in a webserver shared folder
-VideoSaveDirectory /var/www/okamera/public_html/flash/video
+# You may want to put this in a web server shared folder
+VideoSaveDirectory /home/pi/okamera/video
 
 # Where to save thumbnails
-# You may want to put this in a webserver shared folder
-ThumbnailSaveDirectory /var/www/okamera/public_html/flash/thumbnail
+# You may want to put this in a web server shared folder
+ThumbnailSaveDirectory /home/pi/okamera/thumbnail
 
 # The complete path to ffmpeg
-ffmpegPath /home/lzz/bin/ffmpeg
+ffmpegPath /home/pi/bin/ffmpeg
 
-# How many KiB of drive space should be free before saving the next video?
-# When there's not enough free space, the oldest videos will be deleted before
-# saving the next one
+# How many KiB of drive space (of the video save directory) should be free
+# before saving the next video?
+# When there's not enough free space, old videos are deleted before saving the
+# next one
 MinimumFreeDiskSpace 262144 #256MiB
 
-# The angle of rotation for the video
-# Don't use values other then 0, 90, 180 and 270
+# The --rotation (or -rot) raspivid option
+# Set this to 180 if your video is upside down
 #
-# Use 180 here if your video is upside down
-RaspividRotation 180
+# From raspivid documentation:
+# Set image rotation (0-359)
+# Sets the rotation of the image in viewfinder and resulting image. This can
+# take any value from 0 upwards, but due to hardware constraints only 0, 90, 180
+# and 270 degree rotations are supported.
+RaspividRotation 0
 
-# The width and height, in pixels, of the video to be saved
-# Using 1296x968 is recommended because it uses binning on the camera module,
-# meaning the noise is reduced and the video files are smaller
+# The --width (or -w) raspivid option
+# Using 1296 here is strongly recommended, for enabling binning, witch reduces
+# noise. 1920 won't use the full sensor.
 #
-# Warning: The camera sensor is 4:3, so 16:9 resolutions like 720p and 1080p
-# don't make use of the entire sensor
+# From raspivid documentation:
+# Set image width <size>
+# Width of resulting video. This should be between 64 and 1920.
 RaspividWidth 1296
+
+# The --height (or -h)raspivid option
+# Using 968 here is strongly recommended, for enabling binning, witch reduces
+# noise. 1080 won't use the full sensor.
+#
+# From raspivid documentation:
+# Set image height <size>
+# Height of resulting video. This should be between 64 and 1080.
 RaspividHeight 968
 
-# CRF sets the quality of the video
-# Lower values increase the video quality, but make the video files larger
-# Sensible values are between 16 (for very good quality) and 32 (for very low
+# The --qp raspivid option
+# Good values are between 16 (for very good quality) and 32 (for very low
 # disk space)
-# Don't try to use values lower then 14 here because they will quickly use all
-# your disk and you won't see any noticeable difference in quality
+#
+# From raspivid documentation:
+# Set quantisation parameter
+# Sets the initial quantisation parameter for the stream. Varies from
+# approximately 10 to 40, and will greatly affect the quality of the recording.
+# Higher values reduce quality and decrease file size.
 RaspividCRF 28
 
-# You may want to use this to set how the video should be displayed by the HDMI
-# or analog video output
-# Read the raspivid documentation if you need to use this
-#RaspividPreview 0,0,800,600
+# The --preview (or -p) raspivid option
+#
+# From raspivid documentation:
+# Preview window settings <'x,y,w,h'>
+# Allows the user to define the size and location on the screen that the preview
+# window will be placed. Note this will be superimposed over the top of any
+# other windows/graphics.
+RaspividPreview 0,0,800,600
 
-# Number of frames per second
-# Higher numbers make video more fluid, but increases video file size
+# The --framerate (or -fps) raspivid option
 # Using 6 is a good value for saving space, 24 is a good value if space is not a
 # problem
-# Anything between 2 and 30 is fine
+#
+# From raspivid documentation:
+# Specify the frames per second to record
+# At present, the minimum frame rate allowed is 2fps, the maximum is 30fps.
+# This is likely to change in the future.
 RaspividFramerate 6
 
-# Duration of the saved video files, in seconds
+# Duration of each video files, in seconds
 RaspividSegmentDuration 60
 
-# h264 video intra frames are complete images, witch are very bandwidth
-# consuming
-# Other frames are based on intra frames, so they are a lot smaller
-# A lower value means your video is more reliable to corruption, faster to seek
-# and a lot bigger
-# Every segment must start with a intra frame, so the maximum value here is the
-# framerate multiplied by segment duration
+# The --intra (or -g) raspivid parameter
+# Every segment must start with a intra frame, so the maximum value here is 
+# RaspividFramerate * RaspividSegmentDuration
 #
-# Example: For a 60 second segment with 12 frames per second, the maximum value
+# Example: For a 60 second segment with frame rate 12, the maximum value
 # is 60 * 12 = 720
+#
+# From raspivid documentation:
+# Specify the intra refresh period (key frame rate/GoP)
+# Sets the intra refresh period (GoP) rate for the recorded video. H264 video
+# uses a complete frame (I-frame) every intra refresh period from which
+# subsequent frames are based. This options specifies the numbers of frames
+# between each I-frame. Larger numbers here will reduce the size of the
+# resulting video, smaller numbers make the stream more robust to error.
 RaspividIntraframeInterval 360
 
-# h264 profile to be used
-# You probably want to leave this as high
+# The --profile (or -pf) raspivid option
+#
+# From raspivid documentation:
+# Specify H264 profile to use for encoding
+# Sets the H264 profile to be used for the encoding. Options are:
+#   baseline
+#   main
+#   high
 RaspividProfile high
 
 # The width of the thumbnail

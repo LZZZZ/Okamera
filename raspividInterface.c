@@ -152,6 +152,7 @@ pid_t startCamera(
             "--output", videoOutput,
             "--timeout", "0",
             "--qp", crf,
+            "--bitrate", "0",
             "--framerate", framerate,
             "--intra", iframeInterval,
             "--segment", segmentDurationMs,
@@ -159,6 +160,7 @@ pid_t startCamera(
             "--wrap", tempRawFiles,
             "--start", "1",
             "--level", "4.2",
+            "--exposure", "night",
             "--awb", "auto",
             "--metering", "backlit",
             NULL
