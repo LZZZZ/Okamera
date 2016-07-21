@@ -54,7 +54,7 @@ pid_t startCamera(
         char* rotation,
         char* preview,
         char* profile,
-        char* wrap,
+        unsigned char wrap,
         char* temporaryDir
 ) {
     pid_t pid = fork();

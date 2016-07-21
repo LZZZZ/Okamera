@@ -65,7 +65,7 @@ extern "C" {
             char* rotation,
             char* preview,
             char* profile,
-            char* wrap,
+            unsigned char wrap,
             char* temporaryDir
             );
 

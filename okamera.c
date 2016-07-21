@@ -397,7 +397,19 @@ int main() {
             }
             
             //Start the camera
-            raspivid = startCamera();
+            raspivid = startCamera(
+                    config.RaspividWidth,
+                    config.RaspividHeight,
+                    config.RaspividCRF,
+                    config.RaspividFramerate,
+                    config.RaspividIntraframeInterval,
+                    config.RaspividSegmentDuration,
+                    config.RaspividRotation,
+                    config.RaspividPreview,
+                    config.RaspividProfile,
+                    config.NumberTemporaryRawFiles,
+                    config.TemporaryDirectory
+            );
             if (raspivid > 0) {
                 syslog(LOG_INFO, "Raspivid started with pid %d.", raspivid);
 
