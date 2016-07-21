@@ -65,7 +65,7 @@ pid_t startCamera(
 
         //Converting segment duration from seconds to milliseconds
         char segmentDurationMs[16];
-        snprintf(segmentDurationMs, 16, "%d000", segmentDuration);
+        snprintf(segmentDurationMs, 16, "%s000", segmentDuration);
 
         //Converting number of temporary files from int to string
         char tempRawFiles[4];
