@@ -1,6 +1,6 @@
 <?php
-$VIDEO_DIRECTORY = 'flash/video';
-$THUMBNAIL_DIRECTORY = 'flash/thumbnail';
+$VIDEO_DIRECTORY = 'video';
+$THUMBNAIL_DIRECTORY = 'thumbnail';
 
 $VIDEO_FORMAT = 'mp4';
 $THUMBNAIL_FORMAT = 'webm';
@@ -69,19 +69,24 @@ $headline .=
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link rel="stylesheet" type="text/css" href="estilo.css" />
+        <link rel="icon" type="image/png" href="okamera.png">
         <title>Okamera</title>
         <script type="text/javascript" src="js/webpjs-0.0.2.min.js"></script>
     </head>
     <body>
-        <p>Okamera [ <?php echo $headline; ?> ]</p>
+        <p class="title">Okamera [ <?php echo $headline; ?> ]</p>
         <div id="thumbnails"><?php
                 $pos = 0;
                 foreach ($videoDirectory as $file) {
                     if (($pos >= $primeiro) && ($pos < $ultimo)) {
                         $nome = date('Y/m/d H\hi\m\i\ns\s', $file) . ' (' . human_filesize(filesize("$VIDEO_DIRECTORY/$file.mp4")) . ')';
+                        $nomeMin = date('H\h i\m\i\n s\s', $file) . ' - ' . human_filesize(filesize("$VIDEO_DIRECTORY/$file.mp4"));
 ?>
-
-            <a href="videoplayer.php?video=<?php echo $file ?>"><img class="thumbnail" alt="<?php echo $nome; ?>" title="<?php echo $nome; ?>" src="<?php echo "$THUMBNAIL_DIRECTORY/$file.webp" ?>" /></a><?php
+            <div class="thumbContainer">
+                <a href="videoplayer.php?video=<?php echo $file ?>" target="_blank"><img class="thumbnail" alt="<?php echo $nome; ?>" title="<?php echo $nome; ?>" src="<?php echo "$THUMBNAIL_DIRECTORY/$file.webp" ?>" /></a>
+                <p class="thumbText"><?php echo $nomeMin; ?></p>
+            </div>
+            <?php
                     }
                     $pos++;
                 }

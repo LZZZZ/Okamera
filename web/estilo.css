@@ -9,6 +9,24 @@ html {
     padding: 0px;
     margin: 0px;
 }
+.thumbContainer {
+    background-color: #333;
+    display: inline-block;
+    margin: 0px;
+    margin-bottom: 2px;
+    padding: 0px;
+}
+.thumbText {
+    font-size: 0.7em;
+    margin: -3px;
+    margin-bottom: 2px;
+    padding: 0px;
+}
+.title {
+    margin-top: 0px;
+    margin-bottom: 5px;
+    padding: 0px;
+}
 a {
     text-decoration: none;
     color: white;
