@@ -50,6 +50,9 @@ extern "C" {
 #define RASPIVID_FRAMERATE                      "RaspividFramerate"
 #define RASPIVID_SEGMENT_DURATION               "RaspividSegmentDuration"
 #define RASPIVID_INTRAFRAME_INTERVAL            "RaspividIntraframeInterval"
+#define RASPIVID_EXPOSURE                       "RaspividExposure"
+#define RASPIVID_WHITEBLANCE                    "RaspividAWB"
+#define RASPIVID_METERING                       "RaspividMetering"
 #define RASPIVID_PROFILE                        "RaspividProfile"
 #define THUMBNAIL_WIDTH                         "ThumbnailWidth"
 #define THUMBNAIL_FORMAT                        "ThumbnailFormat"
@@ -67,6 +70,9 @@ extern "C" {
 #define DEFAULT_RASPIVID_FRAMERATE              "6"
 #define DEFAULT_RASPIVID_SEGMENT_DURATION       "60"
 #define DEFAULT_RASPIVID_INTRAFRAME_INTERVAL    "180"
+#define DEFAULT_RASPIVID_EXPOSURE               "fixedfps"
+#define DEFAULT_RASPIVID_WHITEBLANCE            "flash"
+#define DEFAULT_RASPIVID_METERING               "average"
 #define DEFAULT_RASPIVID_PROFILE                "high"
 #define DEFAULT_THUMBNAIL_WIDTH                 "400"
 #define DEFAULT_THUMBNAIL_FORMAT                "webp"
@@ -96,6 +102,9 @@ extern "C" {
         char* RaspividFramerate;
         char* RaspividSegmentDuration;
         char* RaspividIntraframeInterval;
+        char* RaspividExposure;
+        char* RaspividAWB;
+        char* RaspividMetering;
         char* RaspividProfile;
         char* ThumbnailWidth;
         char* ThumbnailFormat;
@@ -168,6 +177,14 @@ extern "C" {
      * the space
      */
     unsigned char stringSafeCopy(char** destination, char* value);
+    
+    /**
+     * Get the amount of args for raspivid
+     * 
+     *@param where to search for the args
+     */
+    unsigned int getNumberOfRaspividArgs(struct Config* config);
+    
 #ifdef __cplusplus
     }
 #endif

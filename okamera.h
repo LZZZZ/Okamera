@@ -46,6 +46,7 @@ extern "C" {
 #include "ffmpegInterface.h"
 
 #define PROGRAM_NAME "okamera_log"
+#define PROGRAM_VERSION 10
 #define LOCK_FILE "/dev/shm/okamera/okamera.lock"
 
     /**

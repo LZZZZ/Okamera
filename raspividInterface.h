@@ -35,39 +35,69 @@ extern "C" {
 #include <stddef.h>
 #include <stdlib.h>
 #include <unistd.h>
+    
+#include "config.h"
 
+#define RASPIVID_BIN_PATH               "/opt/vc/bin/raspivid"
+    
+#define RASPIVID_PARAMETER_PREVIEW      "--preview"
+#define RASPIVID_PARAMETER_FULLSCREEN   "--fullscreen"
+#define RASPIVID_PARAMETER_NOPREVIEW    "--nopreview"
+#define RASPIVID_PARAMETER_OPACITY      "--opacity"
+#define RASPIVID_PARAMETER_SHARPNESS    "--sharpness"
+#define RASPIVID_PARAMETER_CONTRAST     "--contrast"
+#define RASPIVID_PARAMETER_BRIGHTNESS   "--brightness"
+#define RASPIVID_PARAMETER_SATURATION   "--saturation"
+#define RASPIVID_PARAMETER_ISO          "--ISO"
+#define RASPIVID_PARAMETER_VSTAB        "--vstab"
+#define RASPIVID_PARAMETER_EV           "--ev"
+#define RASPIVID_PARAMETER_EXPOSURE     "--exposure"
+#define RASPIVID_PARAMETER_AWB          "--awb"
+#define RASPIVID_PARAMETER_IMXFX        "--imxfx"
+#define RASPIVID_PARAMETER_COLFX        "--colfx"
+#define RASPIVID_PARAMETER_METERING     "--metering"
+#define RASPIVID_PARAMETER_ROTATION     "--rotation"
+#define RASPIVID_PARAMETER_HFLIP        "--hflip"
+#define RASPIVID_PARAMETER_VFLIP        "--vflip"
+#define RASPIVID_PARAMETER_ROI          "--roi"
+#define RASPIVID_PARAMETER_SHUTTER      "--shutter"
+#define RASPIVID_PARAMETER_DRC          "--drc"
+#define RASPIVID_PARAMETER_STATS        "--stats"
+#define RASPIVID_PARAMETER_AWBGAINS     "--awbgains"
+#define RASPIVID_PARAMETER_MODE         "--mode"
+#define RASPIVID_PARAMETER_CAMSELECT    "--camselect"
+#define RASPIVID_PARAMETER_ANNOTATE     "--annotate"
+#define RASPIVID_PARAMETER_ANNOTATEEX   "--annotateex"
+#define RASPIVID_PARAMETER_WIDTH        "--width"
+#define RASPIVID_PARAMETER_HEIGHT       "--height"
+#define RASPIVID_PARAMETER_BITRATE      "--bitrate"
+#define RASPIVID_PARAMETER_OUTPUT       "--output"
+#define RASPIVID_PARAMETER_VERBOSE      "--verbose"
+#define RASPIVID_PARAMETER_TIMEOUT      "--timeout"
+#define RASPIVID_PARAMETER_DEMO         "--demo"
+#define RASPIVID_PARAMETER_FRAMERATE    "--framerate"
+#define RASPIVID_PARAMETER_PENC         "--penc"
+#define RASPIVID_PARAMETER_INTRA        "--intra"
+#define RASPIVID_PARAMETER_CRF          "--qp"
+#define RASPIVID_PARAMETER_PROFILE      "--profile"
+#define RASPIVID_PARAMETER_INLINE       "--inline"
+#define RASPIVID_PARAMETER_TIMED        "--timed"
+#define RASPIVID_PARAMETER_KEYPRESS     "--keypress"
+#define RASPIVID_PARAMETER_SIGNAL       "--signal"
+#define RASPIVID_PARAMETER_INITIAL      "--initial"
+#define RASPIVID_PARAMETER_SEGMENT      "--segment"
+#define RASPIVID_PARAMETER_WRAP         "--wrap"
+#define RASPIVID_PARAMETER_START        "--start"
+    
     /**
-     * Starts the raspivid camera in segment mode with the defined options
+     * Starts the raspivid camera in segment mode with the options defined in
+     * config
      * 
-     * @param width             output video width
-     * @param height            output video height
-     * @param crf               video encode quality
-     * @param framerate         video frames per second
-     * @param iframeInterval    interval between h264 intra frames
-     * @param segmentDuration   duration of each video, in seconds
-     * @param rotation          video rotation: for flipped sensor use 180
-     * @param preview           video preview for hdmi or analog output
-     * @param profile           video encode profile
-     * @param wrap              how many videos to save before wraping
-     * @param temporaryDir      where to save the videos
+     * @param config config struct with raspivid options
      * 
-     * @return                  the pid of the child thread
-     * 
-     * TODO implement RaspividPreview configuration
+     * @return the pid of the child thread
      */
-    pid_t startCamera(
-            char* width,
-            char* height,
-            char* crf,
-            char* framerate,
-            char* iframeInterval,
-            char* segmentDuration,
-            char* rotation,
-            char* preview,
-            char* profile,
-            unsigned char wrap,
-            char* temporaryDir
-            );
+    pid_t startCamera(struct Config* config);
 
 #ifdef __cplusplus
 }

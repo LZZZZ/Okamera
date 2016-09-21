@@ -181,12 +181,14 @@ unsigned char setParameter(struct Config* config, char* name, char* value) {
     } else if (strcmp(RASPIVID_SEGMENT_DURATION, name) == 0) {
         return stringSafeCopy(&config->RaspividSegmentDuration, value);
     } else if (strcmp(RASPIVID_INTRAFRAME_INTERVAL, name) == 0) {
+        return stringSafeCopy(&config->RaspividIntraframeInterval, value);
+        /*
         if ( (config->RaspividSegmentDuration != NULL) && (config->RaspividFramerate != NULL) ) {
             int segmentDuration = strtol(config->RaspividSegmentDuration, NULL, 10);
             int framerate = strtol(config->RaspividFramerate, NULL, 10);
             int iframeInterval = strtol(value, NULL, 10);
             if (iframeInterval > (segmentDuration * framerate)) {
-                syslog(LOG_WARNING, "RaspividIntraframeInterval is %d too high. Using %d.", iframeInterval, segmentDuration * framerate);
+                syslog(LOG_WARNING, "RaspividIntraframeInterval %d is too high. Using %d.", iframeInterval, segmentDuration * framerate);
                 iframeInterval = segmentDuration * framerate;
                 char temp[32];
                 snprintf(temp, 32, "%d", iframeInterval);
@@ -196,7 +198,14 @@ unsigned char setParameter(struct Config* config, char* name, char* value) {
             syslog(LOG_ERR, "RaspividFramerate and RaspividSegmentDuration must be set before RaspividIntraframeInterval.");
             return 1;
         }
+        */ 
         return stringSafeCopy(&config->RaspividIntraframeInterval, value);
+    } else if (strcmp(RASPIVID_EXPOSURE, name) == 0) {
+        return stringSafeCopy(&config->RaspividExposure, value);
+    } else if (strcmp(RASPIVID_WHITEBLANCE, name) == 0) {
+        return stringSafeCopy(&config->RaspividAWB, value);
+    } else if (strcmp(RASPIVID_METERING, name) == 0) {
+        return stringSafeCopy(&config->RaspividMetering, value);
     } else if (strcmp(RASPIVID_PROFILE, name) == 0) {
         return stringSafeCopy(&config->RaspividProfile, value);
     } else if (strcmp(THUMBNAIL_WIDTH, name) == 0) {
@@ -258,6 +267,9 @@ void setDefault(struct Config* config) {
     config->RaspividFramerate = NULL;
     config->RaspividSegmentDuration = NULL;
     config->RaspividIntraframeInterval = NULL;
+    config->RaspividExposure = NULL;
+    config->RaspividAWB = NULL;
+    config->RaspividMetering = NULL;
     config->RaspividProfile = NULL;
     config->ThumbnailWidth = NULL;
     config->ThumbnailFormat = NULL;
@@ -271,6 +283,9 @@ void setDefault(struct Config* config) {
     stringSafeCopy(&config->RaspividFramerate, DEFAULT_RASPIVID_FRAMERATE);
     stringSafeCopy(&config->RaspividSegmentDuration, DEFAULT_RASPIVID_SEGMENT_DURATION);
     stringSafeCopy(&config->RaspividIntraframeInterval, DEFAULT_RASPIVID_INTRAFRAME_INTERVAL);
+    stringSafeCopy(&config->RaspividExposure, DEFAULT_RASPIVID_EXPOSURE);
+    stringSafeCopy(&config->RaspividAWB, DEFAULT_RASPIVID_WHITEBLANCE);
+    stringSafeCopy(&config->RaspividMetering, DEFAULT_RASPIVID_METERING);
     stringSafeCopy(&config->RaspividProfile, DEFAULT_RASPIVID_PROFILE);
     stringSafeCopy(&config->ThumbnailWidth, DEFAULT_THUMBNAIL_WIDTH);
     stringSafeCopy(&config->ThumbnailFormat, DEFAULT_THUMBNAIL_FORMAT);
@@ -298,6 +313,9 @@ void freeConfig(struct Config* config) {
     free(config->RaspividFramerate);
     free(config->RaspividSegmentDuration);
     free(config->RaspividIntraframeInterval);
+    free(config->RaspividExposure);
+    free(config->RaspividAWB);
+    free(config->RaspividMetering);
     free(config->RaspividProfile);
     free(config->ThumbnailWidth);
     free(config->ThumbnailFormat);
@@ -347,6 +365,15 @@ unsigned char checkConfig(struct Config* config) {
     if(config->RaspividIntraframeInterval == NULL) {
         return 1;
     }
+    if(config->RaspividExposure == NULL) {
+        return 1;
+    }
+    if(config->RaspividAWB == NULL) {
+        return 1;
+    }
+    if(config->RaspividMetering == NULL) {
+        return 1;
+    }
     if(config->RaspividProfile == NULL) {
         return 1;
     }
@@ -369,4 +396,58 @@ unsigned char checkConfig(struct Config* config) {
         return 1;
     }
     return 0;
+}
+
+/**
+ * Get the amount of args for raspivid
+ * 
+ *@param where to search for the args
+ */
+unsigned int getNumberOfRaspividArgs(struct Config* config) {
+    //bin                       1
+    //mode                      2
+    //annotate                  4
+    //annotateex                2
+    //bitrate                   2
+    //output                    2
+    //timeout                   2
+    //inline                    1
+    //SegmentDuration           2
+    //IntraframeInterval        2
+    //NumberTemporaryRawFiles   3
+    //start                     2
+    unsigned int numArgs = 25;
+    
+    if (config->RaspividRotation != NULL) {
+        numArgs += 2;
+    }
+    if (config->RaspividWidth != NULL) {
+        numArgs += 2;
+    }
+    if (config->RaspividHeight != NULL) {
+        numArgs += 2;
+    }
+    if (config->RaspividCRF != NULL) {
+        numArgs += 2;
+    }
+    if (config->RaspividPreview != NULL) {
+        numArgs += 2;
+    }
+    if (config->RaspividFramerate != NULL) {
+        numArgs += 2;
+    }
+    if (config->RaspividExposure != NULL) {
+        numArgs += 2;
+    }
+    if (config->RaspividAWB != NULL) {
+        numArgs += 2;
+    }
+    if (config->RaspividMetering != NULL) {
+        numArgs += 2;
+    }
+    if (config->RaspividProfile != NULL) {
+        numArgs += 2;
+    }
+    
+    return numArgs;
 }

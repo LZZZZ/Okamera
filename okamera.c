@@ -25,6 +25,7 @@
  */
 
 #include "okamera.h"
+#include "raspividInterface.h"
 
 /**
  * Sorting function for qsort
@@ -208,7 +209,7 @@ void checkForReadyh264Files() {
     //Array to store the files in the dir
     struct fileWithCtime raws[config.NumberTemporaryRawFiles];
     unsigned short size = 0;
-
+    
     //Parsing the dir
     if ((dir = opendir(config.TemporaryDirectory)) != NULL) {
         while ((ent = readdir(dir)) != NULL) {
@@ -320,13 +321,16 @@ void deleteOldestVideo() {
         //For every file in the videos directory
         while ((ent = readdir(dir)) != NULL) {
             //If the file is a mp4
-            if (strcmp(getFileExtension(ent->d_name), "mp4") == 0) {
-                //Converting the timestamp to time_t
-                time_t timestamp = atol(ent->d_name);
+            const char* extensao = getFileExtension(ent->d_name);
+            if (extensao != NULL) {
+                if (strcmp(extensao, "mp4") == 0) {
+                    //Converting the timestamp to time_t
+                    time_t timestamp = atol(ent->d_name);
 
-                //If it's older then the oldest one until now, set this as oldest
-                if (timestamp < oldest) {
-                    oldest = timestamp;
+                    //If it's older then the oldest one until now, set this as oldest
+                    if (timestamp < oldest) {
+                        oldest = timestamp;
+                    }
                 }
             }
         }
@@ -356,12 +360,13 @@ void deleteOldestVideo() {
 int main() {
     //Do forks and stuff to run as a service
     daemonize();
-    syslog(LOG_INFO, "%s started.", PROGRAM_NAME);
+    syslog(LOG_INFO, "%s version %d started.", PROGRAM_NAME, PROGRAM_VERSION);
     
     //Reading the configuration
     setDefault(&config);
     if (parseConfigFile(&config) == 0) {
         if (checkConfig(&config) == 0) {
+            /*
             syslog(LOG_INFO, "%s %s", VIDEO_SAVE_DIRECTORY, config.VideoSaveDirectory);
             syslog(LOG_INFO, "%s %s", THUMBNAIL_SAVE_DIRECTORY, config.ThumbnailSaveDirectory);
             syslog(LOG_INFO, "%s %s", FFMPEG_PATH, config.ffmpegPath);
@@ -374,12 +379,16 @@ int main() {
             syslog(LOG_INFO, "%s %s", RASPIVID_FRAMERATE, config.RaspividFramerate);
             syslog(LOG_INFO, "%s %s", RASPIVID_SEGMENT_DURATION, config.RaspividSegmentDuration);
             syslog(LOG_INFO, "%s %s", RASPIVID_INTRAFRAME_INTERVAL, config.RaspividIntraframeInterval);
+            syslog(LOG_INFO, "%s %s", RASPIVID_EXPOSURE, config.RaspividExposure);
+            syslog(LOG_INFO, "%s %s", RASPIVID_WHITEBLANCE, config.RaspividAWB);
+            syslog(LOG_INFO, "%s %s", RASPIVID_METERING, config.RaspividMetering);
             syslog(LOG_INFO, "%s %s", RASPIVID_PROFILE, config.RaspividProfile);
             syslog(LOG_INFO, "%s %s", THUMBNAIL_WIDTH, config.ThumbnailWidth);
             syslog(LOG_INFO, "%s %s", THUMBNAIL_FORMAT, config.ThumbnailFormat);
             syslog(LOG_INFO, "%s %s", THUMBNAIL_OPTIONS, config.ThumbnailOptions);
             syslog(LOG_INFO, "%s %s", TEMPORARY_DIRECTORY, config.TemporaryDirectory);
             syslog(LOG_INFO, "%s %hho", NUMBER_TEMPORARY_RAW_FILES, config.NumberTemporaryRawFiles);
+            */
             
             //Creating directories
             mkdir(config.TemporaryDirectory, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
@@ -397,19 +406,7 @@ int main() {
             }
             
             //Start the camera
-            raspivid = startCamera(
-                    config.RaspividWidth,
-                    config.RaspividHeight,
-                    config.RaspividCRF,
-                    config.RaspividFramerate,
-                    config.RaspividIntraframeInterval,
-                    config.RaspividSegmentDuration,
-                    config.RaspividRotation,
-                    config.RaspividPreview,
-                    config.RaspividProfile,
-                    config.NumberTemporaryRawFiles,
-                    config.TemporaryDirectory
-            );
+            raspivid = startCamera(&config);
             if (raspivid > 0) {
                 syslog(LOG_INFO, "Raspivid started with pid %d.", raspivid);
 
