@@ -1,18 +1,16 @@
 # Okamera
-Raspbverry Pi continuous video recorder
 
-Okamera is a simple C program made to run as a daemon and continuously record video (using the Raspberry Pi Camera Module).
-It uses raspivid to do the recording, witch uses the hardware encoder, so it can record video up to 1920x1080 at 30 frames per second.
-Using a lower 1296x968 resolution is recommended, because it uses the full camera sensor with binning, reducing noise and saving disk space.
+Raspbverry Pi security camera
 
-There is no motion detection so it's intended to be used in external environments (where there's always motion) and with external USB hard drive, or a very large USB flash memory or SD card.
+Okamera is a simple program for continuously recording video using the Raspberry Pi Camera Module.
 
-It's recommended to have any webserver with php to enable remote access to the videos, and ffmpeg is required, for muxing and creating thumbnails. The raspibian repo has avconv, witch does NOT work. You need to compile ffmpeg, with can take a few hours.
+It uses raspivid to do the recording, so it can record video up to 1080p at 30 frames per second.
+
+There is no motion detection because it's designed to be used in external environments, where there's always motion, and with an external USB hard drive or a very large USB flash memory/SD card.
+
+You can use an webserver with php to access the videos remotely, and ffmpeg is required, for muxing and creating thumbnails. Avconv does NOT work. You need to compile ffmpeg, with can take a few hours.
 
 Using a RTC module is also highly recommended.
-
-Currently, Okamera is working, but with some important missing features.
-
 
 
 # Compilation and installation
@@ -45,33 +43,29 @@ Currently, Okamera is working, but with some important missing features.
   `sudo /etc/init.d/okamera start`
 
 
-If you want to access the files remotely, install and configure an web server with php and copy the files in the web folder to where you set up in your web server.
+# Web server
 
-The video and thumbnail directory set up in the okamera configuration file (/etc/okamera/okamera_config) must be inside the shared folder.
-
+If you want to access the files remotely, install and configure an web server and php and use the files in the web folder. 
+The video and thumbnail directories set up in the okamera configuration file must be shared by the web server. 
 Edit index.php and videoplayer.php and set the directory parameters. You probably should set up basic http auth too.
 
 
 # Using
+
 Okamera logs to syslog so you can read the log messages there (/var/log/syslog).
-To stop okamera you can use the init script: `sudo /etc/init.d/okamera stop`.
+To stop okamera you can use the init script `sudo /etc/init.d/okamera stop`.
 
 
 # TODO
 
-Make scripts for compiling and installing
+Store data to a a SQLite database
 
-Use a SQLite db to store data, instead of always parsing the folders
-
-Use ffprobe to determine the length of the videos
+Get video information using ffprobe
 
 Improve the web interface
 
-Create html files so PHP is not required
-
-Add a simple webserver so no external webserver is required
+Serve web pages directly
 
 Use MMAL instead of raspivid to record the video files
 
 Use libavformat instead of ffmpeg to mux the video files
-
