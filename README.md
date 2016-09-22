@@ -1,6 +1,6 @@
 # Okamera
 
-Raspbverry Pi security camera
+Raspberry Pi Security Camera Recorder
 
 Okamera is a simple program for continuously recording video using the Raspberry Pi Camera Module.
 
