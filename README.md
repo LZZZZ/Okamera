@@ -56,7 +56,7 @@ To stop okamera you can use the init script `sudo service okamera stop`.
 
 # TODO
 
-Store data to a a SQLite database
+Store data to a SQLite database
 
 Get video information using ffprobe
 
