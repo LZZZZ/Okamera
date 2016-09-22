@@ -8,7 +8,7 @@ It uses raspivid to do the recording, so it can record video up to 1080p at 30 f
 
 There is no motion detection because it's designed to be used in external environments, where there's always motion, and with an external USB hard drive or a very large USB flash memory/SD card.
 
-You can use an webserver with php to access the videos remotely, and ffmpeg is required, for muxing and creating thumbnails. Avconv does NOT work. You need to compile ffmpeg, with can take a few hours.
+You can use an web server with php to access the videos remotely, and ffmpeg is required, for muxing and creating thumbnails. Avconv does NOT work. You need to compile ffmpeg, with can take a few hours.
 
 Using a RTC module is also highly recommended.
 
@@ -22,9 +22,7 @@ Using a RTC module is also highly recommended.
 
 3. Download and compile ffmpeg following this guide: https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu. There's no need for libass, libfdk-aac, libmp3lame, libopus, libtheora, libvorbis and libx265 so you can remove those options when running configure. You do need libwebp, so add `--enable-libwebp`
 
-4. If you want to use USB HDD or flash memory, remember to add them to fstab
-
-5. Download and compile
+4. Download and compile
   ```
   cd ~
   git clone https://github.com/LZZZZ/Okamera.git
@@ -33,13 +31,13 @@ Using a RTC module is also highly recommended.
   sudo make install
   ```
 
-6. Edit the configuration file to suit your needs
+5. Edit the configuration file to suit your needs
   `sudo nano /etc/okamera/okamera_config`
 
-7. Make Okamera run when the system is started
+6. Make Okamera run when the system is started
   `sudo update-rc.d okamera defaults`
 
-8. Start recording
+7. Start recording
   `sudo /etc/init.d/okamera start`
 
 
