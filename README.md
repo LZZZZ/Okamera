@@ -15,35 +15,37 @@ Currently, Okamera is working, but with some important missing features.
 
 
 
-# Installing
+# Compilation and installation
 
+1. Make sure that your Raspberry Pi and it's camera module are working
 
-Currently, installation must be done manually.
+2. Install libwebp-dev
+  `sudo apt-get install libwebp-dev`
 
-1. Make sure that your Raspberry Pi and it's camera module are working (you have to enable the camera using raspi-config)
-
-2. Install libwebp-dev: "sudo apt-get install libwebp-dev"
-
-3. Download and compile ffmpeg following this guide: https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu. There's no need for libass, libfdk-aac, libmp3lame, libopus, libtheora, libvorbis and libx265 so you don't have to install them. Just remove the --enable option when running configure. You do need libwebp, so add --enable-libwebp
+3. Download and compile ffmpeg following this guide: https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu. There's no need for libass, libfdk-aac, libmp3lame, libopus, libtheora, libvorbis and libx265 so you can remove those options when running configure. You do need libwebp, so add `--enable-libwebp`
 
 4. If you want to use USB HDD or flash memory, remember to add them to fstab
 
-5. Download this project files and compile them with "gcc -o okamera *.c"
+5. Download and compile
+  ```
+  cd ~
+  git clone https://github.com/LZZZZ/Okamera.git
+  cd Okamera
+  make
+  sudo make install
+  ```
 
-6. Copy the okamera bin to /usr/local/bin: "sudo cp okamera /usr/local/bin/"
+6. Edit the configuration file to suit your needs
+  `sudo nano /etc/okamera/okamera_config`
 
-7. Create the directory /etc/okamera with "sudo mkdir /etc/okamera", and then copy the configuration file res/okamera_config there with "sudo cp res/okamera_config /etc/okamera"
+7. Make Okamera run when the system is started
+  `sudo update-rc.d okamera defaults`
 
-8. Edit the configuration file to suit your needs with "sudo nano /etc/okamera/okamera_config"
-
-9. Copy the okamera init script in res/okamera to /etc/init.d/okamera "sudo cp res/okamera /etc/init.d/okamera"
-
-10. Run "sudo update-rc.d okamera defaults" to make okamera run when the system is started
-
-11. Run "sudo /etc/init.d/okamera start" to start recording
+8. Start recording
+  `sudo /etc/init.d/okamera start`
 
 
-If you want to access the files remotely, install and configure an web server and copy the files in the web folder to where you set up in your web server.
+If you want to access the files remotely, install and configure an web server with php and copy the files in the web folder to where you set up in your web server.
 
 The video and thumbnail directory set up in the okamera configuration file (/etc/okamera/okamera_config) must be inside the shared folder.
 
@@ -52,7 +54,7 @@ Edit index.php and videoplayer.php and set the directory parameters. You probabl
 
 # Using
 Okamera logs to syslog so you can read the log messages there (/var/log/syslog).
-To stop okamera you can use the init script: "sudo /etc/init.d/okamera stop".
+To stop okamera you can use the init script: `sudo /etc/init.d/okamera stop`.
 
 
 # TODO
