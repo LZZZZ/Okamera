@@ -38,7 +38,7 @@ Using a RTC module is also highly recommended.
   `sudo update-rc.d okamera defaults`
 
 7. Start recording
-  `sudo /etc/init.d/okamera start`
+  `sudo service okamera start`
 
 
 # Web server
@@ -51,7 +51,7 @@ Edit index.php and videoplayer.php and set the directory parameters. You probabl
 # Using
 
 Okamera logs to syslog so you can read the log messages there (/var/log/syslog).
-To stop okamera you can use the init script `sudo /etc/init.d/okamera stop`.
+To stop okamera you can use the init script `sudo service okamera stop`.
 
 
 # TODO
